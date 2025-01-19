@@ -1,82 +1,112 @@
 class Atm:
-    #static variable
-    counter=1
+    # Static variable (Class variable shared among all instances)
+    counter = 1
 
-    def __init__(self):              #constructor is init ; special method that is automatically executed when an object is created
-        self.__pin=" "
-        self.__balance=0
-        self.sno=Atm.counter
-        Atm.counter +=1
+    def __init__(self):
+        # Encapsulation (Private instance variables)
+        self.__pin = " "
+        self.__balance = 0
+        self.__transaction_history = []
+        self.sno = Atm.counter
+        Atm.counter += 1
         print(self.sno)
-
         self.__menu()
 
     def __menu(self):
-        user_input=int(input(''' How will you like to proceed:
-                                1. To create pin
-                                2. To deposit
+        # Abstraction (Hiding implementation details from the user)
+        user_input = int(input(''' How will you like to proceed:
+                                1. Create PIN
+                                2. Deposit
                                 3. Withdraw
-                                4. Check balance 
-                                5. exit () '''))
+                                4. Check Balance
+                                5. Change PIN
+                                6. View Transaction History
+                                7. Exit
+                                '''))
 
-        if user_input==1:
+        if user_input == 1:
             self.create_pin()
-        elif user_input==2:
+        elif user_input == 2:
             self.deposit()
-        elif user_input==3:
+        elif user_input == 3:
             self.withdraw()
         elif user_input == 4:
-           self.check_balance()
+            self.check_balance()
         elif user_input == 5:
-            print('exit!')
+            self.change_pin()
+        elif user_input == 6:
+            self.view_transaction_history()
+        elif user_input == 7:
+            print('Exit!')
         else:
-            print('error')
-
+            print('Error')
 
     def create_pin(self):
-        temp=input('Enter your pin')
-        self.__pin=temp
-        print('pin set successfully')
+        # Encapsulation (Private method)
+        temp = input('Enter your new PIN: ')
+        self.__pin = temp
+        print('PIN set successfully')
         self.__menu()
 
     def deposit(self):
-        temp=input("Enter your pin")
-        if temp==self.__pin:
-             self.__balance +=int(input('Enter the amount you want ot deposit '))
-             print('Money successfully deposited ')
+        # Encapsulation (Private method)
+        temp = input("Enter your PIN: ")
+        if temp == self.__pin:
+            amount = int(input('Enter the amount you want to deposit: '))
+            self.__balance += amount
+            self.__transaction_history.append(f"Deposited: {amount}")
+            print('Money successfully deposited')
         else:
-            print('wrong pin entered ')
+            print('Wrong PIN entered')
         self.__menu()
 
     def withdraw(self):
-        temp = input("Enter your pin")
+        # Encapsulation (Private method)
+        temp = input("Enter your PIN: ")
         if temp == self.__pin:
-            amount = int(input("enter the amount you want to withdraw"))
-            if amount < self.__balance:
+            amount = int(input("Enter the amount you want to withdraw: "))
+            if amount <= self.__balance:
                 self.__balance -= amount
-                print(amount , 'successfully withdrawn')
+                self.__transaction_history.append(f"Withdrew: {amount}")
+                print(amount, 'successfully withdrawn')
             else:
-                print('Not sufficient balance ')
-
+                print('Not sufficient balance')
         else:
-            print("Invalid pin ")
-
+            print("Invalid PIN")
         self.__menu()
 
     def check_balance(self):
-        temp = input("Enter your pin")
+        # Encapsulation (Private method)
+        temp = input("Enter your PIN: ")
         if temp == self.__pin:
             print("The balance in your account is:", self.__balance)
-
+        else:
+            print("Invalid PIN")
         self.__menu()
 
+    def change_pin(self):
+        # Encapsulation (Private method)
+        temp = input("Enter your current PIN: ")
+        if temp == self.__pin:
+            new_pin = input("Enter your new PIN: ")
+            self.__pin = new_pin
+            print("PIN changed successfully")
+        else:
+            print("Invalid current PIN")
+        self.__menu()
 
+    def view_transaction_history(self):
+        # Encapsulation (Private method)
+        temp = input("Enter your PIN: ")
+        if temp == self.__pin:
+            print("Transaction History:")
+            for transaction in self.__transaction_history:
+                print(transaction)
+        else:
+            print("Invalid PIN")
+        self.__menu()
 
-
-
-
-
-
-sbi= Atm()
-hdfc=Atm()
+# Creating instances of Atm (Instantiation of objects)
+sbi = Atm()
+hdfc = Atm()
 
