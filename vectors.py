@@ -70,3 +70,7 @@ print(f"v1 x v2: {v1.cross(v2)}")
 print(f"Angle between v1 and v2: {v1.angle_with(v2)} radians")
 print(f"Projection of v1 onto v2: {v1.projection_onto(v2)}")
 print(f"Are v1 and v2 orthogonal? {v1.is_orthogonal_to(v2)}")
+
+
+
+
