@@ -1,19 +1,16 @@
 class Atm:
     # Static variable (Class variable shared among all instances)
     counter = 1
-    instances = {}
 
-    def __init__(self, pin=None):
+    def __init__(self):
         # Encapsulation (Private instance variables)
-        self.__pin = pin if pin else " "
+        self.__pin = " "
         self.__balance = 0
         self.__transaction_history = []
         self.sno = Atm.counter
         Atm.counter += 1
-        Atm.instances[self.__pin] = self
-        print(f"ATM instance created with serial number: {self.sno}")
-        if not pin:
-            self.__menu()
+        print(self.sno)
+        self.__menu()
 
     def __menu(self):
         # Abstraction (Hiding implementation details from the user)
@@ -24,8 +21,7 @@ class Atm:
                                 4. Check Balance
                                 5. Change PIN
                                 6. View Transaction History
-                                7. Logout
-                                8. Exit
+                                7. Exit
                                 '''))
 
         if user_input == 1:
@@ -41,8 +37,6 @@ class Atm:
         elif user_input == 6:
             self.view_transaction_history()
         elif user_input == 7:
-            self.logout()
-        elif user_input == 8:
             print('Exit!')
         else:
             print('Error')
@@ -51,7 +45,6 @@ class Atm:
         # Encapsulation (Private method)
         temp = input('Enter your new PIN: ')
         self.__pin = temp
-        Atm.instances[self.__pin] = self
         print('PIN set successfully')
         self.__menu()
 
@@ -96,9 +89,7 @@ class Atm:
         temp = input("Enter your current PIN: ")
         if temp == self.__pin:
             new_pin = input("Enter your new PIN: ")
-            del Atm.instances[self.__pin]
             self.__pin = new_pin
-            Atm.instances[self.__pin] = self
             print("PIN changed successfully")
         else:
             print("Invalid current PIN")
@@ -114,15 +105,6 @@ class Atm:
         else:
             print("Invalid PIN")
         self.__menu()
-
-    def logout(self):
-        print("Logged out successfully.")
-        pin = input("Enter your PIN to log in: ")
-        if pin in Atm.instances:
-            Atm.instances[pin].__menu()
-        else:
-            print("Invalid PIN. Creating a new instance.")
-            Atm(pin)
 
 # Creating instances of Atm (Instantiation of objects)
 sbi = Atm()

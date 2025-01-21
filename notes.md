@@ -374,3 +374,620 @@ age = 30
 formatted_string = "Name: %s, Age: %d" % (name, age)
 print(formatted_string)  # Output: Name: Alice, Age: 30
 
+Instance variables :
+Instance variables are variables that are defined inside a class but outside any method. They are shared by all
+instances of the class.
+python
+class MyClass:
+# Instance variable
+my_var = "Hello, World!"
+# Method to print the instance variable
+def print_var(self):
+print(self.my_var)
+# Creating an instance of the class
+my_obj = MyClass()
+print(my_obj.my_var)  # Output: Hello, World!
+print(my_obj.print_var())  # Output: Hello, World!
+
+
+access modifiers:
+private public 
+
+
+nothing in python is truely private , but we can use double underscore to make it look like private
+
+ABSTRACTION:
+Abstraction in OOP (Object-Oriented Programming) in Python
+Abstraction is one of the fundamental principles of object-oriented programming. It involves hiding the complex implementation details and showing only the essential features of an object. This helps in reducing programming complexity and effort.
+
+In Python, abstraction can be achieved using abstract classes and interfaces. The abc module in Python provides the infrastructure for defining abstract base classes (ABCs).
+
+
+
+
+```python
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def sound(self):
+        pass
+
+class Dog(Animal):
+    def sound(self):
+        return "Bark"
+
+class Cat(Animal):
+    def sound(self):
+        return "Meow"
+
+# Example usage
+dog = Dog()
+cat = Cat()
+print(dog.sound())  # Output: Bark
+print(cat.sound())  # Output: Meow
+```
+
+Explanation:
+Abstract Class (Animal): An abstract class cannot be instantiated and typically includes one or more abstract methods.
+Abstract Method (sound): A method that is declared, but contains no implementation. Subclasses are required to implement this method.
+Concrete Classes (Dog and Cat): These classes inherit from the abstract class and provide implementations for the abstract methods.
+In this example, the Animal class is an abstract class with an abstract method sound. The Dog and Cat classes inherit from Animal and provide their own implementations of the sound method. This demonstrates how abstraction allows us to define a template for a group of related classes while hiding the implementation details.
+
+
+In Python, data abstraction can be implemented in several ways beyond using abstract classes. Here are a few more methods:
+
+1. Using Abstract Base Classes (ABCs)
+As previously shown, abstract base classes (ABCs) can be used to define abstract methods that must be implemented by subclasses.
+
+2. Using Interfaces
+While Python does not have a built-in interface keyword like some other languages, you can achieve similar functionality using ABCs.
+
+3. Using Encapsulation
+Encapsulation is another way to achieve abstraction by restricting access to certain components of an object. This is typically done using private and protected members.
+
+4. Using Properties
+Properties in Python allow you to control access to instance variables, providing a way to hide the internal representation of an object.
+
+Example Implementations
+Using Abstract Base Classes (ABCs)
+Using Encapsulation
+Using Properties
+Summary
+Abstract Base Classes (ABCs): Define abstract methods that must be implemented by subclasses.
+Encapsulation: Restrict access to certain components of an object using private and protected members.
+Properties: Control access to instance variables, providing a way to hide the internal representation of an object.
+These methods help achieve data abstraction by hiding the implementation details and exposing only the necessary parts of an object.
+
+```python
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+    @abstractmethod
+    def perimeter(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+# Example usage
+rect = Rectangle(10, 20)
+print(f"Area: {rect.area()}")  # Output: Area: 200
+print(f"Perimeter: {rect.perimeter()}")  # Output: Perimeter: 60```
+
+
+By abstract classes
+```python
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # Private variable
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def withdraw(self, amount):
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+
+    def get_balance(self):
+        return self.__balance
+
+# Example usage
+account = BankAccount(1000)
+account.deposit(500)
+account.withdraw(200)
+print(f"Balance: {account.get_balance()}")  # Output: Balance: 1300
+```
+
+
+By encapsulation
+
+```python
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # Private variable
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def withdraw(self, amount):
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+
+    def get_balance(self):
+        return self.__balance
+
+# Example usage
+account = BankAccount(1000)
+account.deposit(500)
+account.withdraw(200)
+print(f"Balance: {account.get_balance()}")  # Output: Balance: 1300
+```
+
+
+by property
+```python
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius  # Protected variable
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        if value > 0:
+            self._radius = value
+        else:
+            raise ValueError("Radius must be positive")
+
+    @property
+    def area(self):
+        return 3.14159 * self._radius ** 2
+
+# Example usage
+circle = Circle(5)
+print(f"Radius: {circle.radius}")  # Output: Radius: 5
+print(f"Area: {circle.area}")  # Output: Area: 78.53975
+circle.radius = 10
+print(f"Updated Radius: {circle.radius}")  # Output: Updated Radius: 10
+print(f"Updated Area: {circle.area}")  # Output: Updated Area: 314.159```
+
+
+
+
+
+
+### Inheritance in OOP (Object-Oriented Programming)
+
+**Inheritance** is a fundamental concept in object-oriented programming (OOP) that allows a class to inherit attributes and methods from another class. The class that inherits is called the **subclass** or **derived class**, and the class being inherited from is called the **superclass** or **base class**.
+
+### Key Points:
+- **Reusability**: Inheritance promotes code reusability by allowing new classes to reuse existing code.
+- **Hierarchy**: It establishes a hierarchical relationship between classes.
+- **Overriding**: Subclasses can override or extend the functionality of methods defined in the superclass.
+
+### Example in Python
+
+```python
+# Base class (superclass)
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def sound(self):
+        raise NotImplementedError("Subclasses must implement this method")
+
+# Derived class (subclass)
+class Dog(Animal):
+    def sound(self):
+        return "Bark"
+
+# Another derived class (subclass)
+class Cat(Animal):
+    def sound(self):
+        return "Meow"
+
+# Example usage
+dog = Dog("Buddy")
+cat = Cat("Whiskers")
+
+print(f"{dog.name} says {dog.sound()}")  # Output: Buddy says Bark
+print(f"{cat.name} says {cat.sound()}")  # Output: Whiskers says Meow
+```
+
+### Explanation:
+- **Base Class (`Animal`)**: The superclass that defines common attributes and methods for all animals.
+- **Derived Classes (`Dog` and `Cat`)**: Subclasses that inherit from `Animal` and provide specific implementations of the `sound` method.
+
+### Types of Inheritance:
+1. **Single Inheritance**: A subclass inherits from one superclass.
+   ```python
+   class A:
+       pass
+
+   class B(A):
+       pass
+   ```
+
+2. **Multiple Inheritance**: A subclass inherits from more than one superclass.
+   ```python
+   class A:
+       pass
+
+   class B:
+       pass
+
+   class C(A, B):
+       pass
+   ```
+
+3. **Multilevel Inheritance**: A subclass inherits from another subclass.
+   ```python
+   class A:
+       pass
+
+   class B(A):
+       pass
+
+   class C(B):
+       pass
+   ```
+
+4. **Hierarchical Inheritance**: Multiple subclasses inherit from the same superclass.
+   ```python
+   class A:
+       pass
+
+   class B(A):
+       pass
+
+   class C(A):
+       pass
+   ```
+
+5. **Hybrid Inheritance**: A combination of two or more types of inheritance.
+   ```python
+   class A:
+       pass
+
+   class B(A):
+       pass
+
+   class C(A):
+       pass
+
+   class D(B, C):
+       pass
+   ```
+
+### Summary
+Inheritance allows classes to inherit attributes and methods from other classes, promoting code reusability and establishing a hierarchical relationship between classes. Subclasses can override or extend the functionality of methods defined in the superclass.
+
+
+
+
+
+### Polymorphism in OOP (Object-Oriented Programming)
+
+**Polymorphism** is a fundamental concept in object-oriented programming that allows objects of different classes to be treated as objects of a common superclass. It enables a single interface to represent different underlying forms (data types). Polymorphism is achieved through method overriding and method overloading.
+
+### Key Points:
+- **Method Overriding**: Allows a subclass to provide a specific implementation of a method that is already defined in its superclass.
+- **Method Overloading**: Allows multiple methods in the same class to have the same name but different parameters. (Note: Python does not support method overloading directly, but it can be achieved using default arguments or variable-length arguments.)
+
+### Example of Method Overriding in Python
+
+```python
+class Animal:
+    def sound(self):
+        raise NotImplementedError("Subclasses must implement this method")
+
+class Dog(Animal):
+    def sound(self):
+        return "Bark"
+
+class Cat(Animal):
+    def sound(self):
+        return "Meow"
+
+# Example usage
+def make_sound(animal: Animal):
+    print(animal.sound())
+
+dog = Dog()
+cat = Cat()
+
+make_sound(dog)  # Output: Bark
+make_sound(cat)  # Output: Meow
+```
+
+### Explanation:
+- **Base Class (`Animal`)**: Defines a method `sound` that is intended to be overridden by subclasses.
+- **Derived Classes (`Dog` and `Cat`)**: Provide specific implementations of the `sound` method.
+- **Polymorphic Behavior**: The `make_sound` function can take any object of type `Animal` and call its `sound` method, demonstrating polymorphism.
+
+### Example of Method Overloading in Python (Using Default Arguments)
+
+```python
+class MathOperations:
+    def add(self, a, b, c=0):
+        return a + b + c
+
+# Example usage
+math_ops = MathOperations()
+print(math_ops.add(1, 2))      # Output: 3
+print(math_ops.add(1, 2, 3))   # Output: 6
+```
+
+### Explanation:
+- **Method Overloading**: The `add` method can take either two or three arguments. The third argument has a default value of 0, allowing the method to be called with either two or three arguments.
+
+### Polymorphism with Inheritance
+
+```python
+class Shape:
+    def area(self):
+        raise NotImplementedError("Subclasses must implement this method")
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return 3.14159 * self.radius ** 2
+
+# Example usage
+shapes = [Rectangle(10, 20), Circle(5)]
+
+for shape in shapes:
+    print(f"Area: {shape.area()}")
+```
+
+### Explanation:
+- **Base Class (`Shape`)**: Defines an abstract method `area`.
+- **Derived Classes (`Rectangle` and `Circle`)**: Provide specific implementations of the `area` method.
+- **Polymorphic Behavior**: The `area` method can be called on any object of type `Shape`, and the correct implementation will be executed based on the object's actual class.
+
+### Summary
+Polymorphism allows objects of different classes to be treated as objects of a common superclass. It is achieved through method overriding and method overloading, enabling a single interface to represent different underlying forms. This promotes flexibility and reusability in code.
+
+
+
+
+### Polymorphism in OOP (Object-Oriented Programming)
+
+**Polymorphism** is a fundamental concept in object-oriented programming that allows objects of different classes to be treated as objects of a common superclass. It enables a single interface to represent different underlying forms (data types). Polymorphism is achieved through method overriding and method overloading.
+
+### Key Points:
+- **Method Overriding**: Allows a subclass to provide a specific implementation of a method that is already defined in its superclass.
+- **Method Overloading**: Allows multiple methods in the same class to have the same name but different parameters. (Note: Python does not support method overloading directly, but it can be achieved using default arguments or variable-length arguments.)
+
+### Example of Method Overriding in Python
+
+```python
+class Animal:
+    def sound(self):
+        raise NotImplementedError("Subclasses must implement this method")
+
+class Dog(Animal):
+    def sound(self):
+        return "Bark"
+
+class Cat(Animal):
+    def sound(self):
+        return "Meow"
+
+# Example usage
+def make_sound(animal: Animal):
+    print(animal.sound())
+
+dog = Dog()
+cat = Cat()
+
+make_sound(dog)  # Output: Bark
+make_sound(cat)  # Output: Meow
+```
+
+### Explanation:
+- **Base Class (`Animal`)**: Defines a method `sound` that is intended to be overridden by subclasses.
+- **Derived Classes (`Dog` and `Cat`)**: Provide specific implementations of the `sound` method.
+- **Polymorphic Behavior**: The `make_sound` function can take any object of type `Animal` and call its `sound` method, demonstrating polymorphism.
+
+### Example of Method Overloading in Python (Using Default Arguments)
+
+```python
+class MathOperations:
+    def add(self, a, b, c=0):
+        return a + b + c
+
+# Example usage
+math_ops = MathOperations()
+print(math_ops.add(1, 2))      # Output: 3
+print(math_ops.add(1, 2, 3))   # Output: 6
+```
+
+### Explanation:
+- **Method Overloading**: The `add` method can take either two or three arguments. The third argument has a default value of 0, allowing the method to be called with either two or three arguments.
+
+### Polymorphism with Inheritance
+
+```python
+class Shape:
+    def area(self):
+        raise NotImplementedError("Subclasses must implement this method")
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return 3.14159 * self.radius ** 2
+
+# Example usage
+shapes = [Rectangle(10, 20), Circle(5)]
+
+for shape in shapes:
+    print(f"Area: {shape.area()}")
+```
+
+### Explanation:
+- **Base Class (`Shape`)**: Defines an abstract method `area`.
+- **Derived Classes (`Rectangle` and `Circle`)**: Provide specific implementations of the `area` method.
+- **Polymorphic Behavior**: The `area` method can be called on any object of type `Shape`, and the correct implementation will be executed based on the object's actual class.
+
+### Summary
+Polymorphism allows objects of different classes to be treated as objects of a common superclass. It is achieved through method overriding and method overloading, enabling a single interface to represent different underlying forms. This promotes flexibility and reusability in code.
+
+
+
+Polymorphism in Python can be achieved in several ways beyond method overriding and method overloading. Here are some additional methods:
+
+### 1. Duck Typing
+Duck typing is a concept related to dynamic typing in Python. It means that the type or class of an object is less important than the methods it defines. If an object implements the required methods, it can be used in place of another object.
+
+### Example of Duck Typing
+
+```python
+class Bird:
+    def fly(self):
+        print("Bird is flying")
+
+class Airplane:
+    def fly(self):
+        print("Airplane is flying")
+
+# Example usage
+def make_it_fly(flying_object):
+    flying_object.fly()
+
+bird = Bird()
+airplane = Airplane()
+
+make_it_fly(bird)       # Output: Bird is flying
+make_it_fly(airplane)   # Output: Airplane is flying
+```
+
+### Explanation:
+- **Duck Typing**: The `make_it_fly` function can accept any object that has a `fly` method, regardless of its class.
+
+### 2. Operator Overloading
+Operator overloading allows you to define custom behavior for operators (`+`, `-`, `*`, etc.) in your classes.
+
+### Example of Operator Overloading
+
+```python
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+
+# Example usage
+v1 = Vector(2, 3)
+v2 = Vector(4, 5)
+v3 = v1 + v2
+
+print(v3)  # Output: Vector(6, 8)
+```
+
+### Explanation:
+- **Operator Overloading**: The `__add__` method is overridden to define custom behavior for the `+` operator.
+
+### 3. Polymorphism with Functions and Methods
+Functions and methods can be designed to accept parameters of different types, demonstrating polymorphism.
+
+### Example of Polymorphism with Functions
+
+```python
+def add(a, b):
+    return a + b
+
+# Example usage
+print(add(1, 2))          # Output: 3
+print(add("Hello, ", "World!"))  # Output: Hello, World!
+```
+
+### Explanation:
+- **Polymorphism with Functions**: The `add` function can accept both integers and strings, demonstrating polymorphism.
+
+### 4. Polymorphism with Inheritance and Interfaces
+Using inheritance and interfaces, you can define a common interface for different classes.
+
+### Example of Polymorphism with Inheritance
+
+```python
+class Shape:
+    def area(self):
+        raise NotImplementedError("Subclasses must implement this method")
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return 3.14159 * self.radius ** 2
+
+# Example usage
+shapes = [Rectangle(10, 20), Circle(5)]
+
+for shape in shapes:
+    print(f"Area: {shape.area()}")
+```
+
+### Explanation:
+- **Polymorphism with Inheritance**: The `area` method can be called on any object of type `Shape`, and the correct implementation will be executed based on the object's actual class.
+
+### Summary
+Polymorphism in Python can be achieved through various methods:
+- **Duck Typing**: Using objects that implement the required methods, regardless of their class.
+- **Operator Overloading**: Defining custom behavior for operators in your classes.
+- **Polymorphism with Functions**: Designing functions to accept parameters of different types.
+- **Polymorphism with Inheritance and Interfaces**: Using inheritance to define a common interface for different classes.
+
+These methods promote flexibility and reusability in code, allowing objects of different types to be used interchangeably.
+
