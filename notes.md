@@ -991,3 +991,236 @@ Polymorphism in Python can be achieved through various methods:
 
 These methods promote flexibility and reusability in code, allowing objects of different types to be used interchangeably.
 
+### The `super` Keyword in Python
+
+The `super` keyword in Python is used to call a method from a parent class. It is commonly used in the context of inheritance to ensure that the parent class's methods are properly invoked, especially when overriding methods in a subclass.
+
+### Key Points:
+- **Access Parent Class Methods**: `super` allows you to call methods from the parent class.
+- **Avoid Redundancy**: It helps avoid redundancy by reusing the parent class's methods.
+- **Multiple Inheritance**: `super` is particularly useful in multiple inheritance scenarios to ensure that the correct method resolution order (MRO) is followed.
+
+### Basic Usage
+
+#### Single Inheritance
+
+```python
+class Parent:
+    def __init__(self, name):
+        self.name = name
+
+    def greet(self):
+        return f"Hello, my name is {self.name}"
+
+class Child(Parent):
+    def __init__(self, name, age):
+        super().__init__(name)  # Call the parent class's __init__ method
+        self.age = age
+
+    def greet(self):
+        parent_greeting = super().greet()  # Call the parent class's greet method
+        return f"{parent_greeting} and I am {self.age} years old"
+
+# Example usage
+child = Child("Alice", 10)
+print(child.greet())  # Output: Hello, my name is Alice and I am 10 years old
+```
+
+### Explanation:
+- **`super().__init__(name)`**: Calls the `__init__` method of the `Parent` class to initialize the `name` attribute.
+- **`super().greet()`**: Calls the `greet` method of the `Parent` class and extends its functionality in the `Child` class.
+
+### Multiple Inheritance
+
+In multiple inheritance, `super` ensures that the method resolution order (MRO) is followed correctly.
+
+```python
+class A:
+    def __init__(self):
+        print("A's __init__")
+
+class B(A):
+    def __init__(self):
+        super().__init__()
+        print("B's __init__")
+
+class C(A):
+    def __init__(self):
+        super().__init__()
+        print("C's __init__")
+
+class D(B, C):
+    def __init__(self):
+        super().__init__()
+        print("D's __init__")
+
+# Example usage
+d = D()
+# Output:
+# A's __init__
+# C's __init__
+# B's __init__
+# D's __init__
+```
+
+### Explanation:
+- **Method Resolution Order (MRO)**: The order in which base classes are searched when executing a method. The MRO for class `D` is `D -> B -> C -> A`.
+- **`super().__init__()`**: Ensures that the `__init__` methods of all base classes are called in the correct order.
+
+### Using `super` with Class Methods
+
+You can also use `super` with class methods.
+
+```python
+class Parent:
+    @classmethod
+    def greet(cls):
+        return "Hello from Parent"
+
+class Child(Parent):
+    @classmethod
+    def greet(cls):
+        parent_greeting = super().greet()
+        return f"{parent_greeting} and Hello from Child"
+
+# Example usage
+print(Child.greet())  # Output: Hello from Parent and Hello from Child
+```
+
+### Explanation:
+- **`super().greet()`**: Calls the `greet` class method of the `Parent` class and extends its functionality in the `Child` class.
+
+### Summary
+- **`super` Keyword**: Used to call methods from a parent class.
+- **Single Inheritance**: Helps avoid redundancy by reusing the parent class's methods.
+- **Multiple Inheritance**: Ensures the correct method resolution order (MRO) is followed.
+- **Class Methods**: Can also be used with class methods to extend functionality.
+
+The `super` keyword is a powerful tool in Python that promotes code reuse and ensures that the parent class's methods are properly invoked, especially in complex inheritance hierarchies.
+
+
+
+
+
+
+
+
+### Method Resolution Order (MRO) in Python
+
+**Method Resolution Order (MRO)** is the order in which Python looks for a method in a hierarchy of classes. This is especially important in the context of multiple inheritance, where a class can inherit from multiple parent classes.
+
+### Key Points:
+- **Linearization**: MRO provides a linearization of the class hierarchy, ensuring a consistent and predictable order.
+- **C3 Linearization Algorithm**: Python uses the C3 linearization algorithm to compute the MRO.
+- **`__mro__` Attribute**: The MRO of a class can be accessed using the `__mro__` attribute or the `mro()` method.
+
+### Example of MRO in Single Inheritance
+
+```python
+class A:
+    def method(self):
+        print("Method in A")
+
+class B(A):
+    def method(self):
+        print("Method in B")
+
+class C(B):
+    def method(self):
+        print("Method in C")
+
+# Example usage
+c = C()
+c.method()  # Output: Method in C
+
+# MRO
+print(C.__mro__)  # Output: (<class '__main__.C'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>)
+```
+
+### Explanation:
+- **Single Inheritance**: The MRO is straightforward, following the inheritance chain from the subclass to the base class.
+
+### Example of MRO in Multiple Inheritance
+
+```python
+class A:
+    def method(self):
+        print("Method in A")
+
+class B(A):
+    def method(self):
+        print("Method in B")
+
+class C(A):
+    def method(self):
+        print("Method in C")
+
+class D(B, C):
+    def method(self):
+        print("Method in D")
+
+# Example usage
+d = D()
+d.method()  # Output: Method in D
+
+# MRO
+print(D.__mro__)  # Output: (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
+```
+
+### Explanation:
+- **Multiple Inheritance**: The MRO follows the C3 linearization algorithm to determine the order in which classes are searched for a method.
+
+### C3 Linearization Algorithm
+
+The C3 linearization algorithm ensures that the MRO is consistent and follows these rules:
+1. **Preserve the order of base classes**: The order in which base classes are listed in the class definition is preserved.
+2. **Preserve the order of MROs of base classes**: The MROs of the base classes are preserved.
+3. **No class appears before its base classes**: A class cannot appear in the MRO before any of its base classes.
+
+### Example of Complex Multiple Inheritance
+
+```python
+class X:
+    def method(self):
+        print("Method in X")
+
+class Y(X):
+    def method(self):
+        print("Method in Y")
+
+class Z(X):
+    def method(self):
+        print("Method in Z")
+
+class A(Y, Z):
+    def method(self):
+        print("Method in A")
+
+# Example usage
+a = A()
+a.method()  # Output: Method in A
+
+# MRO
+print(A.__mro__)  # Output: (<class '__main__.A'>, <class '__main__.Y'>, <class '__main__.Z'>, <class '__main__.X'>, <class 'object'>)
+```
+
+### Explanation:
+- **Complex Multiple Inheritance**: The MRO is determined by the C3 linearization algorithm, ensuring a consistent and predictable order.
+
+### Accessing MRO
+
+You can access the MRO of a class using the `__mro__` attribute or the `mro()` method.
+
+```python
+print(A.__mro__)  # Output: (<class '__main__.A'>, <class '__main__.Y'>, <class '__main__.Z'>, <class '__main__.X'>, <class 'object'>)
+print(A.mro())    # Output: [<class '__main__.A'>, <class '__main__.Y'>, <class '__main__.Z'>, <class '__main__.X'>, <class 'object'>]
+```
+
+### Summary
+- **MRO**: Determines the order in which classes are searched for a method.
+- **C3 Linearization Algorithm**: Used by Python to compute the MRO.
+- **Single Inheritance**: MRO follows the inheritance chain from subclass to base class.
+- **Multiple Inheritance**: MRO follows the C3 linearization algorithm to ensure a consistent and predictable order.
+- **Accessing MRO**: Use the `__mro__` attribute or the `mro()` method to access the MRO of a class.
+
+Understanding MRO is crucial for working with complex inheritance hierarchies and ensuring that methods are resolved in the correct order.
